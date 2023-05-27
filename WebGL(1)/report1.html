@@ -1,0 +1,145 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Report1</title>
+    <script src="https://unpkg.com/three@0.137.4/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.137.4/examples/js/controls/OrbitControls.js"></script>
+  </head>
+<body>
+ <script>
+      // ページの読み込みを待つ
+      window.addEventListener('DOMContentLoaded', init);
+
+      function init() {
+        // サイズを指定
+        const width = 800
+        const height = 600;
+        
+        let rand1 = 0;
+        let rand2 = 120;
+        let rand3 = 240;
+
+        // レンダラーを作成
+        var renderer = new THREE.WebGLRenderer();
+        document.body.appendChild(renderer.domElement);
+        renderer.setSize(width, height);
+
+        // シーンを作成
+        const scene = new THREE.Scene();
+
+        // カメラを作成
+        const camera = new THREE.PerspectiveCamera(45, width / height);
+        // カメラの初期座標を設定
+        camera.position.set(5, 2.5, 5); //位置を指定
+        camera.lookAt(0, 0, 0); //見つめる方向
+
+        // カメラコントローラーを作成
+        const controls = new THREE.OrbitControls(camera, document.body); 
+
+        // 平行光源1
+        var directionalLight1 = new THREE.DirectionalLight(0xffffff);
+        directionalLight1.position.set(10, 10, 10);
+        // シーンに追加
+        scene.add(directionalLight1);
+        // 平行光源2
+        var directionalLight2 = new THREE.DirectionalLight(0x888888);
+        directionalLight2.position.set(-10, -10, 10);
+        // シーンに追加
+        scene.add(directionalLight2);
+        
+        // 球
+        let sphereGeometry = new THREE.SphereGeometry( 0.3, 16, 16 );
+        let material = new THREE.MeshStandardMaterial({color: 0xff7370});
+        let sphere = new THREE.Mesh(sphereGeometry, material);
+        sphere.position.set(0, 0, 0);
+        scene.add(sphere);
+
+
+        // トーラス1
+        let torusGeometry = new THREE.TorusGeometry(1.6, .01, 6, 64)
+        let torusMaterial = new THREE.MeshPhongMaterial({color: 0x2efefef});
+        let tours1 = new THREE.Mesh(torusGeometry, torusMaterial);
+       
+        // トーラス球
+        let torusSphereGeometry = new THREE.SphereGeometry( 0.2, 8, 8 );
+        let torusSphereMaterial = new THREE.MeshStandardMaterial({color: 0x0000ff});
+        let torusSphere = new THREE.Mesh(torusSphereGeometry, torusSphereMaterial);
+        torusSphere.position.set(Math.cos(rand1*(Math.PI/180))*1.6, Math.sin(rand1*(Math.PI/180))*1.6, 0);
+        
+        const warp = new THREE.Object3D();
+        warp.add(tours1)
+        warp.add(torusSphere)
+        warp.rotation.x = .5
+        warp.rotation.y = .5
+        scene.add(warp)
+
+        // トーラス2
+        let torus2Geometry = new THREE.TorusGeometry(2, .01, 6, 64)
+        let torus2Material = new THREE.MeshPhongMaterial({color: 0x2efefef});
+        let tours2 = new THREE.Mesh(torus2Geometry, torus2Material);
+        
+
+        // トーラス球2
+        let torusSphereGeometry2 = new THREE.SphereGeometry( 0.2, 8, 8 );
+        let torusSphereMaterial2 = new THREE.MeshStandardMaterial({color: 0x0000ff});
+        let torusSphere2 = new THREE.Mesh(torusSphereGeometry2, torusSphereMaterial2);
+        torusSphere2.position.set(Math.cos(rand2*(Math.PI/180))*2, Math.sin(rand2*(Math.PI/180))*2, 0);
+        
+        
+        const warp2 = new THREE.Object3D();
+        warp2.add(tours2);
+        warp2.add(torusSphere2);
+        warp2.rotation.x = .5
+        warp2.rotation.y = 1.5
+        scene.add(warp2);
+
+
+        // トーラス3
+        let torus3Geometry = new THREE.TorusGeometry(2.4, .01, 6, 64)
+        let torus3Material = new THREE.MeshPhongMaterial({color: 0x2efefef});
+        let tours3 = new THREE.Mesh(torus3Geometry, torus3Material);
+        
+
+        // トーラス球3
+        let torusSphereGeometry3 = new THREE.SphereGeometry( 0.2, 8, 8 );
+        let torusSphereMaterial3 = new THREE.MeshStandardMaterial({color: 0x0000ff});
+        let torusSphere3 = new THREE.Mesh(torusSphereGeometry3, torusSphereMaterial3);
+        torusSphere3.position.set(Math.cos(rand3*(Math.PI/180))*2.4, Math.sin(rand3*(Math.PI/180))*2.4, 0);
+        
+        
+        const warp3 = new THREE.Object3D();
+        warp3.add(tours3);
+        warp3.add(torusSphere3);
+        warp3.rotation.x = .5
+        warp3.rotation.y = 2.5;
+       
+        scene.add(warp3);
+
+
+        update();
+
+        // 毎フレーム時に実行されるループイベントです
+        function update() {
+            // レンダリング
+            renderer.render(scene, camera);
+            requestAnimationFrame(update);
+
+            torusSphere.position.x = Math.cos(rand1*(Math.PI/180))*1.6;
+            torusSphere.position.y = Math.sin(rand1*(Math.PI/180))*1.6;
+            warp.rotation.set(warp.rotation.x+=.02, .5, 0)
+            rand1+=15;
+            
+            torusSphere2.position.x = Math.cos(rand2*(Math.PI/180))*2;
+            torusSphere2.position.y = Math.sin(rand2*(Math.PI/180))*2;
+            warp2.rotation.set(warp2.rotation.x+=.03, warp2.rotation.y+=.03, 0);
+            rand2+=7.5;
+       
+            torusSphere3.position.x = Math.cos(rand3*(Math.PI/180))*2.4;
+            torusSphere3.position.y = Math.sin(rand3*(Math.PI/180))*2.4;
+            warp3.rotation.set(warp3.rotation.x+=.04, warp3.rotation.y+=.04, 0);
+            rand3+=5;
+        }
+      }
+    </script>
+</body>
+</html>
