@@ -69,6 +69,26 @@
         <input type="color" id="rand3color" onchange="rand3Color = document.getElementById('rand3color').value;" value="#ff0000"/>
       </div>
     </div>
+    <div>
+      <div>
+        <label for="center">中心のマテリアル</label>
+        <select id="center" onchange="centerMaterial = document.getElementById('center').value">
+          <option value="0">MeshBasicMaterial</option>
+          <option value="1">MeshNormalMaterial</option>
+          <option value="2">MeshLambertMaterial</option>
+          <option value="3">MeshPhongMaterial</option>
+          <option value="4">MeshToonMaterial</option>
+          <option value="5">MeshStandardMaterial</option>
+        </select>
+      </div>
+      <div>
+        <label for="centerColor">中心Color</label>
+        <input type="color" id="centerColor" onchange="centerColor = document.getElementById('centerColor').value;" value="#0000ff"/>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p></p>
   </div>
   <div id="camera_control"></div>
   <script>
@@ -86,6 +106,9 @@
     let rand1Color = document.getElementById("rand1color").value;
     let rand2Color = document.getElementById("rand2color").value;
     let rand3Color = document.getElementById("rand3color").value;
+
+    let centerMaterial = 0
+    let centerColor = document.getElementById('centerColor').value;
 
     function init() {
       // サイズを指定
@@ -126,8 +149,8 @@
 
       // 球
       let sphereGeometry = new THREE.SphereGeometry(0.3, 16, 16);
-      let material = new THREE.MeshStandardMaterial({ color: 0xff7370 });
-      let sphere = new THREE.Mesh(sphereGeometry, material);
+      let materialCenter = new THREE.MeshStandardMaterial({ color: centerColor });
+      let sphere = new THREE.Mesh(sphereGeometry, materialCenter);
       sphere.position.set(0, 0, 0);
       scene.add(sphere);
 
@@ -200,6 +223,28 @@
         // レンダリング
         renderer.render(scene, camera);
         requestAnimationFrame(update);
+
+        switch(Number(centerMaterial)){
+          case 0:
+            sphere.material = new THREE.MeshBasicMaterial({ color: centerColor });
+            break;
+          case 1:
+            sphere.material = new THREE.MeshNormalMaterial();
+            break;
+          case 2:
+            sphere.material = new THREE.MeshLambertMaterial({ color: centerColor });
+            break;
+          case 3:
+            sphere.material = new THREE.MeshPhongMaterial({ color: centerColor }); 
+            break;
+          case 4:
+            sphere.material = new THREE.MeshToonMaterial({ color: centerColor });
+            break;
+          case 5:
+            sphere.material = new THREE.MeshStandardMaterial({ color: centerColor });
+            break;
+          default:
+        }
         
         torusSphere.material.color.set(rand1Color)
         torusSphere2.material.color.set(rand2Color)
