@@ -39,9 +39,6 @@ var directionalLight3 = new THREE.DirectionalLight(0x1f1f1f);
 directionalLight3.position.set(0, 100, -100);
 scene.add(directionalLight3);
 
-// const anbientLisht = new THREE.AmbientLight(0xFFFFFF, 2);
-// scene.add(anbientLisht)
-
 //照明
 // const spotLight = new THREE.SpotLight(0xffffff, 15, 10, Math.PI / 4, 1.5, 2)
 const spotLight_bulb = new THREE.PointLight(0xFFFFFF, 5, 3, 1.0);
@@ -74,7 +71,6 @@ const deskgltfLoader = new THREE.GLTFLoader();
 deskgltfLoader.load('./desk.glb', function (data) {
   const gltf = data;
   let object = gltf.scene
-  console.log(object)
   scene.add(object);
 });
 
@@ -83,7 +79,6 @@ const gltfLoader = new THREE.GLTFLoader();
 gltfLoader.load('./saboten/sabotenlowpori.glb', function (data) {
   const gltf = data;
   let object = gltf.scene
-  console.log(object)
   object.position.y = 5
   scene.add(object);
 });
@@ -94,10 +89,11 @@ const lightgltfLoader = new THREE.GLTFLoader();
 lightgltfLoader.load('./light.glb', function (data) {
   const gltf = data;
   let object = gltf.scene
-  console.log(object)
   object.position.y = 17.5
   scene.add(object);
 });
+
+
 
 // 毎フレーム時に実行されるループイベントです
 function tick() {
